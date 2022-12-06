@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.spring.restservices.entity.User;
+import com.spring.restservices.exceptions.UserExistsException;
+import com.spring.restservices.exceptions.UserNotFoundException;
 
 @Service
 public interface UserService {
@@ -13,11 +15,11 @@ public interface UserService {
 	
 	 List<User> getAllUser();
 	
-     User createUser(User user);
+     User createUser(User user) throws UserExistsException;
 	
-	 Optional<User> getUserById(Long id);
+	 Optional<User> getUserById(Long id) throws UserNotFoundException;
 	 
-	 User updateUserById(Long id,User user);
+	 User updateUserById(Long id,User user) throws UserNotFoundException;
 	
 	 void deleteById(Long id);
 	
