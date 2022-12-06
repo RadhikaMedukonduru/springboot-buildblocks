@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -23,9 +25,11 @@ public class User {
 	@GeneratedValue
 	private Long id;
 	
+	@NotEmpty( message="UseName is mandatory field, please enter user name")
 	@Column(name="USER_NAME",length=25,nullable=false,unique=true)
 	private String userName;
 	
+	@Size(min=2, message="first name should contain atleast 2 chars")
 	@Column(name="FIRST_NAME",length=25,nullable=false)
 	private String firstName;
 	

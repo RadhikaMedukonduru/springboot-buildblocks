@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,11 +21,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.spring.restservices.entity.User;
 import com.spring.restservices.exceptions.UserExistsException;
+import com.spring.restservices.exceptions.UserNameNotFoundException;
 import com.spring.restservices.exceptions.UserNotFoundException;
 import com.spring.restservices.services.UserService;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+
 @RestController
 @RequestMapping("/user")
+@Validated
 public class UserController {
 	
 	@Autowired
@@ -41,7 +47,7 @@ public class UserController {
 	
 
 	@PostMapping("/createUser")
-	public ResponseEntity<Void> createUser(@RequestBody User  user,UriComponentsBuilder builder)
+	public ResponseEntity<Void> createUser(@Valid @RequestBody User  user,UriComponentsBuilder builder)
 	{
 		try {
 		     userService.createUser(user);
@@ -56,7 +62,7 @@ public class UserController {
 	
 	
 	@GetMapping("/getUserById/{id}")
-	public Optional<User> getUserById(@PathVariable("id") Long  id)
+	public Optional<User> getUserById(@PathVariable("id") @Min(1) Long  id)
 	{
 		try {
 			return userService.getUserById(id);
@@ -86,9 +92,15 @@ public class UserController {
 	
 	
 	@GetMapping("/getUserByName/{userName}")
-	public User getUserByName(@PathVariable("userName") String  userName)
+	public User getUserByName(@PathVariable("userName") String  userName) throws UserNameNotFoundException
 	{
-		return userService.getUserByName(userName);
+		 User userByName = userService.getUserByName(userName);
+		 
+		 if(userByName == null)
+		 {
+			 throw new UserNameNotFoundException("User name:" + userName + " not exists");
+		 }
+		return userByName;
 		
 	}
 	
