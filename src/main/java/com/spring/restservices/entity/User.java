@@ -1,21 +1,24 @@
 package com.spring.restservices.entity;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Table(name="user")
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class User {
 	
 	//userName and ssn are unique and Id is primary key
@@ -44,6 +47,19 @@ public class User {
 	
 	@Column(name="SSN",length=25,nullable=false,unique=true)
 	private String ssn;
+	
+	
+	@OneToMany(mappedBy = "user")
+	@JsonIgnore
+	private List<Orders> orders;
+
+	public List<Orders> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Orders> orders) {
+		this.orders = orders;
+	}
 
 	public Long getId() {
 		return id;
@@ -99,6 +115,12 @@ public class User {
 
 	public void setSsn(String ssn) {
 		this.ssn = ssn;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", userName=" + userName + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", email=" + email + ", role=" + role + ", ssn=" + ssn + ", orders=" + orders + "]";
 	}
 
 	
