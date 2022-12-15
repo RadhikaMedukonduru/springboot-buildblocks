@@ -3,6 +3,7 @@ package com.spring.restservices.entity;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,8 +18,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="user")
-@NoArgsConstructor
-@AllArgsConstructor
+@JsonIgnoreProperties({"firstName","lastName"})
 public class User {
 	
 	//userName and ssn are unique and Id is primary key
@@ -45,7 +45,8 @@ public class User {
 	@Column(name="ROLE",length=25,nullable=false)
 	private String role;
 	
-	@Column(name="SSN",length=25,nullable=false,unique=true)
+	@Column(name="SSN",length=25,nullable=true,unique=true)
+	@JsonIgnore
 	private String ssn;
 	
 	
