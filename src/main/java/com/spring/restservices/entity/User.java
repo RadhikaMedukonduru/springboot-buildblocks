@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name="user")
 //@JsonIgnoreProperties({"firstName","lastName"}) -static filtering
-@JsonFilter(value ="userFilter")
+//@JsonFilter(value ="userFilter") --JacksonMappingValue Dynamic Filter
 public class User {
 	
 	//userName and ssn are unique and Id is primary key
@@ -32,22 +33,27 @@ public class User {
 	
 	@NotEmpty( message="UseName is mandatory field, please enter user name")
 	@Column(name="USER_NAME",length=25,nullable=false,unique=true)
+	@JsonView(Views.External.class)
 	private String userName;
 	
 	@Size(min=2, message="first name should contain atleast 2 chars")
 	@Column(name="FIRST_NAME",length=25,nullable=false)
+	@JsonView(Views.External.class)
 	private String firstName;
 	
 	@Column(name="LAST_NAME",length=25,nullable=false)
+	@JsonView(Views.External.class)
 	private String lastName;
 	
 	@Column(name="EMAIL",length=50,nullable=false)
+	@JsonView(Views.Internal.class)
 	private String email;
 	
 	@Column(name="ROLE",length=25,nullable=false)
+	@JsonView(Views.Internal.class)
 	private String role;
 	
-	@Column(name="SSN",length=25,nullable=true,unique=true)
+	@Column(name="SSN",length=25,nullable=false,unique=true)
 	//@JsonIgnore
 	private String ssn;
 	
