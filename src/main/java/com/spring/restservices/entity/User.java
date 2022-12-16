@@ -2,6 +2,7 @@ package com.spring.restservices.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -18,7 +19,8 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="user")
-@JsonIgnoreProperties({"firstName","lastName"})
+//@JsonIgnoreProperties({"firstName","lastName"}) -static filtering
+@JsonFilter(value ="userFilter")
 public class User {
 	
 	//userName and ssn are unique and Id is primary key
@@ -46,7 +48,7 @@ public class User {
 	private String role;
 	
 	@Column(name="SSN",length=25,nullable=true,unique=true)
-	@JsonIgnore
+	//@JsonIgnore
 	private String ssn;
 	
 	
