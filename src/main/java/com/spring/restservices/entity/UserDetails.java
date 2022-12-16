@@ -23,6 +23,7 @@ public class UserDetails {
 	public void setCity(String city) {
 		this.city = city;
 	}
+	
 	public UserDetails(String fistName, String lastName, String city) {
 		super();
 		this.fistName = fistName;
