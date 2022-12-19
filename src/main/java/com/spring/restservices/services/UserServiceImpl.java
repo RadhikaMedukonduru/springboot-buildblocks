@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.restservices.entity.Address;
 import com.spring.restservices.entity.User;
 import com.spring.restservices.repository.UserRepo;
 
@@ -22,7 +23,9 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User createUser(User user) {
-		return repo.save(user);
+		 User saveUser = repo.save(user);
+		 System.out.println(saveUser);
+		 return saveUser;
 	}
 
 	@Override
