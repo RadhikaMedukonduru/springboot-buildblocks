@@ -2,20 +2,26 @@ package com.spring.restservices.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+
+
+@ApiModel("This model is used to create user")
 @Entity
 @Table(name="user")
 //@JsonIgnoreProperties({"firstName","lastName"}) -static filtering
@@ -24,17 +30,19 @@ public class User {
 	
 	//userName and ssn are unique and Id is primary key
 	
+	@ApiModelProperty(notes="Auto-generated id",required=true,position=1)
 	@Column
 	@Id
 	@GeneratedValue
 	private Long id;
 	
+	@ApiModelProperty(notes="Username should be mandatory format",required=false,position=2)
 	@NotEmpty( message="UseName is mandatory field, please enter user name")
 	@Column(name="USER_NAME",length=25,nullable=false,unique=true)
 	@JsonView(Views.External.class)
 	private String userName;
 	
-	@Size(min=2, message="first name should contain atleast 2 chars")
+	@Size(min=2,max=50, message="first name should contain atleast 2 chars")
 	@Column(name="FIRST_NAME",length=25,nullable=false)
 	@JsonView(Views.External.class)
 	private String firstName;

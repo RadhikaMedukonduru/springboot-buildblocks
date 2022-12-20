@@ -2,6 +2,8 @@ package com.spring.restservices.controller;
 
 import java.util.Optional;
 
+import javax.validation.constraints.Min;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +17,6 @@ import com.spring.restservices.entity.User;
 import com.spring.restservices.entity.Views;
 import com.spring.restservices.exceptions.UserNotFoundException;
 import com.spring.restservices.services.UserService;
-
-import jakarta.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/users")

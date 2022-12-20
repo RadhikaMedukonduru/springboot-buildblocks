@@ -3,6 +3,9 @@ package com.spring.restservices.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,15 +22,18 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.google.common.net.MediaType;
 import com.spring.restservices.entity.User;
 import com.spring.restservices.exceptions.UserExistsException;
 import com.spring.restservices.exceptions.UserNameNotFoundException;
 import com.spring.restservices.exceptions.UserNotFoundException;
 import com.spring.restservices.services.UserService;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
+@Api(tags="User Management Restful service", value="UserController", description="controller for user management service")
 @RestController
 @RequestMapping("/user")
 @Validated
@@ -45,9 +51,9 @@ public class UserController {
 	}
 	
 	
-
-	@PostMapping("/createUser")
-	public ResponseEntity<Void> createUser(@Valid @RequestBody User  user,UriComponentsBuilder builder)
+    @ApiOperation(value="used to create a new user")
+	@PostMapping(value="/createUser")   // can use produces to display is swagger
+	public ResponseEntity<Void> createUser(@ApiParam("User info for creating a new user")@Valid @RequestBody User  user,UriComponentsBuilder builder)
 	{
 		try {
 		     userService.createUser(user);
@@ -60,12 +66,14 @@ public class UserController {
 		
 	}
 	
-	
+    @ApiOperation(value="used to reterive a user based on userId")
 	@GetMapping("/getUserById/{id}")
-	public Optional<User> getUserById(@PathVariable("id") @Min(1) Long  id)
+	public User getUserById(@PathVariable("id") @Min(1) Long  id)
 	{
 		try {
-			return userService.getUserById(id);
+			 Optional<User> userById = userService.getUserById(id);
+			 User user = userById.get();
+			 return user;
 		} catch (UserNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
 		}
